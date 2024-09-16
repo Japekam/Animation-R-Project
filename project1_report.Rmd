@@ -1,0 +1,106 @@
+---
+title: "Creating images with R"
+author: "I am Japekam Singh Dang"
+subtitle: "with a little bit of magick"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, message=FALSE, warning=FALSE, error=FALSE)
+library(magick)
+```
+
+```{css}
+body {
+  font-size: 16px; /* Changing the default font size */
+}
+p {
+  color: #FF0000; /* Changing the text color to red */
+}
+h1, h2, h3 {
+  font-weight: bold; /* Making headings bold */
+}
+```
+
+## Project requirements
+
+I started this project by signing up for Github account under the name of Japekam. After completing the basic setup, I created a repository called stats 220. Along that I also made a README file in the same repository.
+
+To be aligned with the project requirements, I used 2 different types of headings i.e level 1 and 2. I created several bullet points (both ordered and unordered). I also changed some text to bold, italics, a different color and added up a couple of emojis in it. I also added up a link to my Linkedin.
+
+The link for my github repo is as follows: 
+https://github.com/Japekam/STATS-220
+
+This is the screenshot of my project folder:
+![](Project1_screenshot.png)
+
+## My meme
+
+![](inspo_meme.png)
+
+I saw the inspo meme and based on the same topic, I used similar situation to form my meme. I re-scaled both my downloaded images in-order to align with the text on the right hand side. Apart from that, for the text images, I changed the size, colour and background color.
+
+```{r meme-code, eval=TRUE}
+
+# static meme
+
+crowded_train <- image_read("crowded_metro.png") %>% #https://images.pexels.com/photos/2706436/pexels-photo-2706436.jpeg
+  image_scale(530)
+
+empty_train <- image_read("empty_metro.png") %>% #https://images.pexels.com/photos/302428/pexels-photo-302428.jpeg
+  image_scale(530)
+
+# Creating blank boxes to write text on them
+
+text1 <- image_blank(width = 350, height = 350, color = "#00f0FF") %>%
+  image_annotate(text = "Books in\nSchool Bag", color = "#000000", size = 60)
+
+text2 <- image_blank(width = 350, height = 350, color = "#00f0FF") %>%
+  image_annotate(text = "Books in\nCollege Bag", color = "#000000", size = 60)
+
+# creating various rows and appending the corresponding image to it's text
+
+first_row <- c(crowded_train, text1) %>%
+  image_append()
+
+second_row <- c(empty_train, text2) %>%
+  image_append()
+
+# appending the final meme together
+
+final_meme <- c(first_row, second_row) %>%
+  image_append(stack = TRUE)
+
+final_meme
+```
+
+
+```{r animation-code, eval=FALSE}
+
+# animation
+
+old_pic <- image_scale(image_read("crowded_metro.png"))
+
+new_pic <- image_scale(image_read("empty_metro.png"))
+
+# animating the meme by using all 4 images together and resizing it
+
+final_animation <- image_resize(c(text1, old_pic, text2, new_pic), '300x250!') %>%
+  image_background('white') %>% # defining the background color
+  image_morph() %>% # the fading effect
+  image_animate(optimize = TRUE, fps = 5) # defining the speed of effect
+
+# saving it on my computer
+
+image_write(final_animation, "my_animation.gif")
+
+```
+![](my_animation.gif)
+
+## Creativity
+
+I creatively made a meme taking a referencing from personal experience! I used to carry so many books in our bag as a young bud, whereas now the things have changed completely and I find it quite funny. I travel using Public transport everyday and got this idea while I was in the train. So, I found an inspiration meme which perfectly objectified my imagination.  Hence, I have been able to demonstrate creativity by making a meme centered around my experience. Hopefully it would also be relatable to most of the STATS 220 Students! :-)
+
+## Learning reflection
+
+In Module 1, I learnt about the importance of using Github. I did not have an account earlier. In the processing of making the account, I came across couple of cool projects by senior data scienctists which inspired me to continue to keep working on my GitHub profile,. Learning cool things of R, especially using images/gif never goes wrong. I would love to learn more about other aspects of R later. I love to work with data in form of numbers/excel sheet. I am looking forward to learn more cool stuff using R(and SQL/Python)!!
